@@ -21,12 +21,12 @@ public class ProductService {
     }
 
     public Product updateOrCreate(Product product) {
-        Product productFromBase = productRepository.getProduct(product.getId());
+        Product productFromBase = productRepository.getProduct(product.getProductId());
         if (productFromBase == null) {
             return productRepository.create(product);
         } else {
             productFromBase.setName(product.getName());
-            productFromBase.setCost(product.getCost());
+            productFromBase.setPrice(product.getPrice());
             productFromBase.setDescription(product.getDescription());
             productFromBase.setQuantityInStock(product.getQuantityInStock());
             return productRepository.create(productFromBase);
