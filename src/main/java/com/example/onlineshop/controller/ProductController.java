@@ -36,14 +36,12 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<Product> create(@RequestBody String json) throws JsonProcessingException, URISyntaxException {
-        Product product = objectMapper.readValue(json, Product.class);
+    public ResponseEntity<Product> create(@RequestBody Product product) throws URISyntaxException {
         return ResponseEntity.created(new URI("/products/" + product.getProductId())).body(productService.updateOrCreate(product));
     }
 
     @PutMapping
-    public ResponseEntity<Product> update(@RequestBody String json) throws JsonProcessingException {
-        Product product = objectMapper.readValue(json, Product.class);
+    public ResponseEntity<Product> update(@RequestBody Product product) {
         return ResponseEntity.ok(productService.updateOrCreate(product));
     }
 

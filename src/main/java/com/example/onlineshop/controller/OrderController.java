@@ -28,8 +28,7 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<Order> create(@RequestBody String json) throws JsonProcessingException, URISyntaxException {
-        Order order = objectMapper.readValue(json, Order.class);
+    public ResponseEntity<Order> create(@RequestBody Order order) throws URISyntaxException {
         return ResponseEntity.created(new URI("/orders/" + order.getOrderId())).body(orderService.create(order));
     }
 
