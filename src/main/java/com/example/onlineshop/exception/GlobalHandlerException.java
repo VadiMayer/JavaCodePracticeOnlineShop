@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class GlobalHandlerException {
 
-    @ExceptionHandler(ArrayIndexOutOfBoundsException.class)
+    @ExceptionHandler(NullPointerException.class)
     public ResponseEntity<String> handlerArrayIndexOutOfBoundsException(NullPointerException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.NO_CONTENT);
     }
