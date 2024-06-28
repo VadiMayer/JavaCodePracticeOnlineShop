@@ -20,7 +20,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -60,9 +59,12 @@ class ProductControllerTest {
 
     @Test
     void testGetNull() throws Exception {
-        when(productService.getProduct(4)).thenThrow(new NullPointerException());
-        mockMvc.perform(get("/products/4"))
-                .andExpect(status().isNotFound());
+        String errorMessage = "Product not found";
+        when(productService.getProduct(4)).thenThrow(new NullPointerException(errorMessage));
+        mockMvc.perform(get("/products/4")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent())
+                .andExpect(content().string(errorMessage));
     }
 
     @Test
@@ -76,6 +78,7 @@ class ProductControllerTest {
                         .content(objectMapper.writeValueAsString(newProduct)))
                 .andExpect(status().isCreated())
                 .andExpect(header().string("Location", location.toString()))
+                .andExpect(header().string("Content-Type", MediaType.APPLICATION_JSON.toString()))
                 .andExpect(jsonPath("$.productId").value(newProduct.getProductId()))
                 .andExpect(jsonPath("$.name").value(newProduct.getName()))
                 .andExpect(jsonPath("$.description").value(newProduct.getDescription()))
