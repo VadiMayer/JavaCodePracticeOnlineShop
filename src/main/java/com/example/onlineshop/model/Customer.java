@@ -22,4 +22,5 @@ public class Customer {
     private String email;
     @NotBlank
     private String contactNumber;
+    private Order order;
 }

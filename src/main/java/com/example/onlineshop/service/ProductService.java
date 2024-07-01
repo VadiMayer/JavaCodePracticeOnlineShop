@@ -1,5 +1,6 @@
 package com.example.onlineshop.service;
 
+import com.example.onlineshop.dto.ProductDTO;
 import com.example.onlineshop.model.Product;
 import com.example.onlineshop.repository.ProductRepository;
 import lombok.AllArgsConstructor;
@@ -35,5 +36,13 @@ public class ProductService {
 
     public void delete(int id) {
         productRepository.delete(id);
+    }
+
+    public static ProductDTO toDTO(Product product) {
+        return new ProductDTO(product.getName(), product.getDescription(), product.getPrice(), product.getQuantityInStock());
+    }
+
+    public static List<ProductDTO> toDTO(List<Product> products) {
+        return products.stream().map(ProductService::toDTO).toList();
     }
 }

@@ -15,6 +15,10 @@ public class ProductRepository {
         return crudProductRepository.findById(id).orElse(null);
     }
 
+    public List<Product> getProductsForOrder(int id) {
+        return crudProductRepository.findAllByOrderId(id);
+    }
+
     public List<Product> getProducts() {
         return crudProductRepository.findAll();
     }
