@@ -6,6 +6,7 @@ import com.example.onlineshop.service.ProductService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -46,7 +47,7 @@ public class ProductController {
         Product productFromBase = productService.updateOrCreate(product);
         ProductDTO productDTO = toDTO(productFromBase);
         String json = objectMapper.writeValueAsString(productDTO);
-        return ResponseEntity.created(new URI("/products/" + product.getProductId())).body(json);
+        return ResponseEntity.created(new URI("/products/" + product.getProductId())).contentType(MediaType.APPLICATION_JSON).body(json);
     }
 
     @PutMapping

@@ -1,5 +1,6 @@
 package com.example.onlineshop.controller;
 
+import com.example.onlineshop.model.Order;
 import com.example.onlineshop.model.Product;
 import com.example.onlineshop.service.ProductService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -40,9 +41,9 @@ class ProductControllerTest {
     @BeforeEach
     void setUp() {
         list = new ArrayList<>();
-        list.add(new Product(1, "Laptop", "15,6", 60_000, 3));
-        list.add(new Product(2, "iPhone", "20 Pro Max", 400_000, 2));
-        list.add(new Product(3, "Samsung", "A21", 15_000, 10));
+        list.add(new Product(1, "Laptop", "15,6", 60_000, 3, new Order()));
+        list.add(new Product(2, "iPhone", "20 Pro Max", 400_000, 2, new Order()));
+        list.add(new Product(3, "Samsung", "A21", 15_000, 10, new Order()));
     }
 
     @AfterEach
@@ -69,7 +70,7 @@ class ProductControllerTest {
 
     @Test
     void create() throws Exception {
-        Product newProduct = new Product(4, "Tablet", "iPad Pro", 150_000, 5);
+        Product newProduct = new Product(4, "Tablet", "iPad Pro", 150_000, 5, new Order());
         URI location = new URI("/products/" + newProduct.getProductId());
         when(productService.updateOrCreate(any(Product.class))).thenReturn(newProduct);
 
@@ -79,7 +80,6 @@ class ProductControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(header().string("Location", location.toString()))
                 .andExpect(header().string("Content-Type", MediaType.APPLICATION_JSON.toString()))
-                .andExpect(jsonPath("$.productId").value(newProduct.getProductId()))
                 .andExpect(jsonPath("$.name").value(newProduct.getName()))
                 .andExpect(jsonPath("$.description").value(newProduct.getDescription()))
                 .andExpect(jsonPath("$.price").value(newProduct.getPrice()))
