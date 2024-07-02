@@ -23,4 +23,12 @@ public class Product {
     private int price;
     private int quantityInStock;
     private Order order;
+
+    public Product(String name, String description, int price, int quantityInStock, Order order) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.quantityInStock = quantityInStock;
+        this.order = order;
+    }
 }

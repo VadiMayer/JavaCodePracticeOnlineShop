@@ -43,11 +43,11 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<String> create(@RequestBody Product product) throws URISyntaxException, JsonProcessingException {
-        Product productFromBase = productService.updateOrCreate(product);
+    public ResponseEntity<String> create(@RequestBody String json) throws URISyntaxException, JsonProcessingException {
+        Product productFromBase = productService.updateOrCreate(objectMapper.readValue(json, Product.class));
         ProductDTO productDTO = toDTO(productFromBase);
-        String json = objectMapper.writeValueAsString(productDTO);
-        return ResponseEntity.created(new URI("/products/" + product.getProductId())).contentType(MediaType.APPLICATION_JSON).body(json);
+        String jsonForResponse = objectMapper.writeValueAsString(productDTO);
+        return ResponseEntity.created(new URI("/products/" + productFromBase.getProductId())).contentType(MediaType.APPLICATION_JSON).body(jsonForResponse);
     }
 
     @PutMapping

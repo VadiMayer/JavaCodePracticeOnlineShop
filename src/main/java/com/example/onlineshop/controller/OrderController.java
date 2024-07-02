@@ -34,11 +34,11 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<String> create(@RequestBody Order order) throws URISyntaxException, JsonProcessingException {
-        Order orderFromBase = orderService.create(order);
+    public ResponseEntity<String> create(@RequestBody String json) throws URISyntaxException, JsonProcessingException {
+        Order orderFromBase = orderService.create(objectMapper.readValue(json, Order.class));
         OrderDTO orderDTO = toDTO(orderFromBase);
-        String json = objectMapper.writeValueAsString(orderDTO);
-        return ResponseEntity.created(new URI("/orders/" + order.getOrderId())).body(json);
+        String jsonForResponse = objectMapper.writeValueAsString(orderDTO);
+        return ResponseEntity.created(new URI("/orders/" + orderFromBase.getOrderId())).body(jsonForResponse);
     }
 
 }

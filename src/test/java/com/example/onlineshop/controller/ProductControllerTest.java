@@ -1,5 +1,6 @@
 package com.example.onlineshop.controller;
 
+import com.example.onlineshop.dto.ProductDTO;
 import com.example.onlineshop.model.Order;
 import com.example.onlineshop.model.Product;
 import com.example.onlineshop.service.ProductService;
@@ -70,20 +71,23 @@ class ProductControllerTest {
 
     @Test
     void create() throws Exception {
-        Product newProduct = new Product(4, "Tablet", "iPad Pro", 150_000, 5, new Order());
-        URI location = new URI("/products/" + newProduct.getProductId());
-        when(productService.updateOrCreate(any(Product.class))).thenReturn(newProduct);
+        ProductDTO newProductDTO = new ProductDTO("Tablet", "iPad Pro", 150_000, 5);
+        URI location = new URI("/products/" + 4);
+        when(productService.updateOrCreate(any(Product.class)))
+                .thenReturn (
+                    new Product(4, newProductDTO.getName(), newProductDTO.getDescription(), newProductDTO.getPrice(), newProductDTO.getQuantityInStock(), new Order())
+                );
 
         mockMvc.perform(post("/products")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(newProduct)))
+                        .content(objectMapper.writeValueAsString(newProductDTO)))
                 .andExpect(status().isCreated())
                 .andExpect(header().string("Location", location.toString()))
                 .andExpect(header().string("Content-Type", MediaType.APPLICATION_JSON.toString()))
-                .andExpect(jsonPath("$.name").value(newProduct.getName()))
-                .andExpect(jsonPath("$.description").value(newProduct.getDescription()))
-                .andExpect(jsonPath("$.price").value(newProduct.getPrice()))
-                .andExpect(jsonPath("$.quantityInStock").value(newProduct.getQuantityInStock()));
+                .andExpect(jsonPath("$.name").value(newProductDTO.getName()))
+                .andExpect(jsonPath("$.description").value(newProductDTO.getDescription()))
+                .andExpect(jsonPath("$.price").value(newProductDTO.getPrice()))
+                .andExpect(jsonPath("$.quantityInStock").value(newProductDTO.getQuantityInStock()));
     }
 
     @Test
